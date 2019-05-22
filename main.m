@@ -49,6 +49,10 @@ plot3(U(1,:),U(2,:),U(3,:),'r.');hold on;
 C=sqrt(U1.*U1+U2.*U2+U3.*U3);
 figure,
 surf(U1,U2,U3,C);% 'FaceColor','b','FaceAlpha',0.5,,'EdgeColor','none'
+title('最大力矩顶点拟合成的面');   
+xlabel('X轴（N*m）');        
+ylabel('Y轴（N*m）');        
+zlabel('Z轴（N*m）');       
 hold on;
 % plot3(0,0,0.3043,'r.');hold on;
 % plot3(0.3088,0,0.1521,'r.');hold on;
@@ -75,9 +79,9 @@ hold on;
 
 % shading interp;
 colorbar
-C1=sqrt(X.*X+Y.*Y+Z.*Z);
+Color1=sqrt(X.*X+Y.*Y+Z.*Z);
 figure,
-surf(X,Y,Z,C1);
+surf(X,Y,Z,Color1);
 % shading interp;
 colorbar
 % figure,
@@ -135,17 +139,88 @@ surf(X2,Y2,Z2);grid on;hold on;
 plot3(azimuth,elevation,r,'r.');
 % stem3(azimuth(1395:1401),elevation(1395:1401),r(1395:1401));
 %  stem3(azimuth,elevation,r);
- 
- 
-p_start=zeros(length(u3(:,1)),3);%向量起点
-x=p_start(:,1);
-y=p_start(:,2);
-z=p_start(:,3);
-u=u3(:,1);
-v=u3(:,2);
-w=u3(:,3);
- figure
-quiver3(x,y,z,u,v,w,1);
+
+A1=0.3893;B1=0.3893;C1=1;D1=-0.3043;
+A2=1;B2=0;C2=0;D2=-0.39088;
+A3=0;B3=1;C3=0;D3=-0.39088;
+a1=[0;0;0.3043];b1=[0.39088;0;0.1521];c1=[0.39088;0.39088;0];d1=[0;0.39088;0.1521];
+a2=[0.39088;0;0];b2=[0.39088;0;0.1521];c2=[0.39088;0.39088;0];%
+a3=[0;0.39088;0];b3=[0;0.39088;0.1521];c3=[0.39088;0.39088;0];
+a4=a1;b4=[0.39088;0;0.3043];c4=[0.39088;0.39088;0.3043];d4=[0;0.39088;0.3043];
+e4=[0.39088;0;0];f4=[0.39088;0.39088;0];g4=[0;0.39088;0];
+
+V=[0.5;0.3;0.4];
+V1(1)=Constrain(V(1),0,0.39088);
+V1(2)=Constrain(V(2),0,0.39088);
+V1(3)=Constrain(V(3),0,0.3043);
+
+X1 = [a1(1); b1(1); c1(1); d1(1)];
+Y1 = [a1(2); b1(2); c1(2); d1(2)];
+Z1 = [a1(3); b1(3); c1(3); d1(3)];
+Color1=sqrt(X1.*X1+Y1.*Y1+Z1.*Z1);
+figure
+h1=fill3(X1,Y1,Z1,Color1);
+set(h1,'FaceAlpha',0.5);
+hold on
+X2 = [a2(1); b2(1); c2(1)];
+Y2 = [a2(2); b2(2); c2(2)];
+Z2 = [a2(3); b2(3); c2(3)];
+Color2=sqrt(X2.*X2+Y2.*Y2+Z2.*Z2);
+h2=fill3(X2,Y2,Z2,Color2);
+set(h2,'FaceAlpha',0.5);
+hold on
+X3 = [a3(1); b3(1); c3(1)];
+Y3 = [a3(2); b3(2); c3(2)];
+Z3 = [a3(3); b3(3); c3(3)];
+Color3=sqrt(X3.*X3+Y3.*Y3+Z3.*Z3);
+h3=fill3(X3,Y3,Z3,Color3);
+set(h3,'FaceAlpha',0.5);
+colorbar
+hold on
+X4 = [a4(1); b4(1); c4(1);d4(1)];
+Y4 = [a4(2); b4(2); c4(2);d4(2)];
+Z4 = [a4(3); b4(3); c4(3);d4(3)];
+h4=fill3(X4,Y4,Z4,[.5 .5 .5]);
+set(h4,'FaceAlpha',0.1);
+hold on
+X5 = [ b4(1); e4(1);f4(1);c4(1)];
+Y5 = [ b4(2); e4(2);f4(2);c4(2)];
+Z5 = [ b4(3); e4(3);f4(3);c4(3)];
+h5=fill3(X5,Y5,Z5,[.5 .5 .5]);
+set(h5,'FaceAlpha',0.1);
+hold on
+X6 = [ c4(1);d4(1);g4(1);f4(1)];
+Y6 = [c4(2);d4(2);g4(2);f4(2)];
+Z6 = [c4(3);d4(3);g4(3);f4(3)];
+h6=fill3(X6,Y6,Z6,[.5 .5 .5]);
+set(h6,'FaceAlpha',0.1);
+hold on
+h7=quiver3(0,0,0,V(1),V(2),V(3),1,'-.g','LineWidth',1);
+set(h7,'maxheadsize',0.5);hold on;
+h8=quiver3(0,0,0,V1(1),V1(2),V1(3),1,'--m','LineWidth',1);
+set(h8,'maxheadsize',0.5);hold on;
+M = fun1(A1,B1,C1,D1,V1);
+h9=quiver3(0,0,0,M(1),M(2),M(3),1,'r','LineWidth',1);
+set(h9,'maxheadsize',0.7);hold on;
+h10=plot3(M(1),M(2),M(3),'k.','MarkerSize',12);
+title('第一卦限最大力矩顶点拟合成的面');   
+axis([0 0.6 0 0.6 0 0.45]);grid on;
+legend([h7 h8 h9 h10],'原始力矩','中间力矩','限幅后力矩','力矩与允许域边界交点');
+xlabel('X轴（N*m）');        
+ylabel('Y轴（N*m）');        
+zlabel('Z轴（N*m）');  
+
+
+
+% p_start=zeros(length(u3(:,)),3);%向量起点
+% x=p_start(:,1);
+% y=p_start(:,2);
+% z=p_start(:,3);
+% u=u3(:,1);
+% v=u3(:,2);
+% w=u3(:,3);
+%  figure
+% quiver3(x,y,z,u,v,w,1);
 
 % [C,ia,ic] = unique(U(1:2,:)','rows');
 % C=C';
