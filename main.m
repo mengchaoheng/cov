@@ -3,8 +3,8 @@ clc;
 % close all;
 N=20;
 K=1*[-0.56   0       0.56    0;
-          0  -0.56    0       0.56;
-      0.218   0.218   0.218   0.218];
+         0  -0.56    0       0.56;
+     0.218   0.218   0.218   0.218];
 a=0.3490000;
   
 [X,Y,Z] = sphere(N);
@@ -78,12 +78,15 @@ hold on;
 % mesh(X1,Y1,Z1)
 
 % shading interp;
-colorbar
+cc=colorbar;
+cc.Label.String = '最大力矩幅值（N*m）';
+
 Color1=sqrt(X.*X+Y.*Y+Z.*Z);
 figure,
 surf(X,Y,Z,Color1);
 % shading interp;
-colorbar
+cc=colorbar;
+cc.Label.String = '最大力矩幅值（N*m）';
 % figure,
 % CC = gradient(U3);
 % meshz(U1,U2,U3,CC)
@@ -140,7 +143,8 @@ plot3(azimuth,elevation,r,'r.');
 % stem3(azimuth(1395:1401),elevation(1395:1401),r(1395:1401));
 %  stem3(azimuth,elevation,r);
 
-A1=0.3893;B1=0.3893;C1=1;D1=-0.3043;
+A1=1/(0.3043*0.39088/(0.3043-0.1521));B1=1/(0.3043*0.39088/(0.3043-0.1521));C1=1/0.3043;D1=-1;% 法向量就是（A1，B1，C1）
+
 A2=1;B2=0;C2=0;D2=-0.39088;
 A3=0;B3=1;C3=0;D3=-0.39088;
 a1=[0;0;0.3043];b1=[0.39088;0;0.1521];c1=[0.39088;0.39088;0];d1=[0;0.39088;0.1521];
@@ -175,7 +179,8 @@ Z3 = [a3(3); b3(3); c3(3)];
 Color3=sqrt(X3.*X3+Y3.*Y3+Z3.*Z3);
 h3=fill3(X3,Y3,Z3,Color3);
 set(h3,'FaceAlpha',0.5);
-colorbar
+cc=colorbar;
+cc.Label.String = '最大力矩幅值（N*m）';
 hold on
 X4 = [a4(1); b4(1); c4(1);d4(1)];
 Y4 = [a4(2); b4(2); c4(2);d4(2)];
